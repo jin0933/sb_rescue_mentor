@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>청주 구조지도</title>
+  <link rel="icon" href="logo.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f5f5f5;
+      --text-color: #000;
+      --button-bg: linear-gradient(135deg, #ffa28b 0%, #ff7810 100%);
+      --button-color: #fff;
+      --button-hover: rgba(0,0,0,0.1);
+    }
+    body.dark {
+      --bg-color: #1e1e1e;
+      --text-color: #f5f5f5;
+      --button-bg: linear-gradient(135deg, #6e6e6e 0%, #303030 100%);
+      --button-color: #fff;
+      --button-hover: rgba(255,255,255,0.1);
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; /* 스크롤 제거 */
+      font-family: 'Arial', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .logo-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: var(--bg-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #ccc;
+      z-index: 1000;
+      height: 60px;
+    }
+    .logo-nav img { height: 50px; }
+
+    iframe {
+  position: absolute;
+  top: 75px; /* 상단 로고 60px + 여백 15px */
+  left: 0;
+  width: 100%;
+  height: calc(100% - 135px); /* 상단 75px + 하단 60px 제외 */
+  border: 0;
+}
+
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background-color: var(--bg-color);
+      border-top: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .bottom-nav button, .bottom-nav a {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-color);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      gap: 2px;
+    }
+
+    .bottom-nav button:hover, .bottom-nav a:hover {
+      color: #888;
+    }
+
+    @media (max-width:600px) {
+      .bottom-nav { height:50px; }
+      .bottom-nav button,.bottom-nav a { font-size:12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 지도 iframe -->
+  <iframe src="https://www.google.com/maps/d/embed?mid=1uPbn89wpr53xFG4lmgN41oC70Lf6aL0"></iframe>
+
+  <!-- 상단 로고 -->
+  <div class="logo-nav">
+    <a href="index.html"><img src="logo.png" alt="로고 이미지" /></a>
+  </div>
+
+  <!-- 하단 네비게이션 바 -->
+  <nav class="bottom-nav">
+    <button onclick="window.location.href='map.html'">
+      <span class="material-icons">map</span>구조지도
+    </button>
+    <button onclick="window.location.href='index.html'">
+      <span class="material-icons">home</span>홈
+    </button>
+    <button onclick="toggleTheme()">
+      <span class="material-icons" id="theme-icon">dark_mode</span>
+      <span id="theme-label">다크 모드</span>
+    </button>
+  </nav>
+
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const icon = document.getElementById('theme-icon');
+      const label = document.getElementById('theme-label');
+
+      body.classList.toggle('dark');
+
+      if (body.classList.contains('dark')) {
+        icon.textContent = 'light_mode';
+        label.textContent = '라이트 모드';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        icon.textContent = 'dark_mode';
+        label.textContent = '다크 모드';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    // 페이지 로드시 저장된 테마 적용
+    window.onload = () => {
+      const savedTheme = localStorage.getItem('theme');
+      const body = document.body;
+      const icon = document.getElementById('theme-icon');
+      const label = document.getElementById('theme-label');
+
+      if (savedTheme === 'dark') {
+        body.classList.add('dark');
+        icon.textContent = 'light_mode';
+        label.textContent = '라이트 모드';
+      } else {
+        body.classList.remove('dark');
+        icon.textContent = 'dark_mode';
+        label.textContent = '다크 모드';
+      }
+    };
+  </script>
+
+</body>
+</html>
