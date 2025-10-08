@@ -7,6 +7,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>청주 구조지도</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* flex 레이아웃 적용 */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-nav {
+      height: 75px; /* 상단 로고 높이 */
+      flex-shrink: 0;
+    }
+
+    iframe {
+      flex: 1; /* 남은 공간 다 차지 */
+      border: 0;
+    }
+
+    .bottom-nav {
+      height: 60px; /* 하단 네비게이션 높이 */
+      flex-shrink: 0;
+    }
+  </style>
 </head>
 <body>
 
@@ -16,20 +41,10 @@
   </div>
 
   <!-- 페이지 본문 -->
-
-<iframe 
-  src="https://www.google.com/maps/d/embed?mid=1uPbn89wpr53xFG4lmgN41oC70Lf6aL0" 
-  frameborder="0" 
-  allowfullscreen
-  style="
-    position: absolute;
-    top: 75px;       /* 상단 로고 60px + 여백 15px */
-    left: 0;
-    width: 100%;
-    height: calc(100% - 135px); /* 상단 75px + 하단 60px 제외 */
-    border: 0;
-  "
-></iframe>
+  <iframe 
+    src="https://www.google.com/maps/d/embed?mid=1uPbn89wpr53xFG4lmgN41oC70Lf6aL0" 
+    allowfullscreen
+  ></iframe>
 
   <!-- 하단 네비게이션 바 -->
   <nav class="bottom-nav">
