@@ -36,14 +36,12 @@
       padding-bottom: 80px;
     }
 
-    /* 메뉴 컨테이너 */
     .menu-container {
       position: relative;
-      width: 220px;
-      height: 220px;
+      width: 200px;
+      height: 200px;
     }
 
-    /* 로고 */
     .logo {
       position: absolute;
       top: 50%;
@@ -58,7 +56,6 @@
       user-select: none;
     }
 
-    /* 버튼 */
     .menu-button {
       position: absolute;
       top: 50%;
@@ -69,8 +66,8 @@
       color: var(--button-color);
       border: none;
       border-radius: 12px;
-      font-size: 16px; /* 최소값 고정 */
-      padding: 12px 20px; /* 최소 패딩 */
+      font-size: clamp(14px, 2vw, 18px);
+      padding: clamp(10px, 1.5vw, 14px) clamp(14px, 2.5vw, 20px);
       cursor: pointer;
       transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
       box-shadow: 0 8px 15px rgba(0,0,0,0.15);
@@ -122,7 +119,14 @@
     .bottom-nav button:hover,
     .bottom-nav a:hover { color: #888; }
 
-    /* 공지사항 모달 */
+    @media (max-width: 600px) {
+      .menu-container { width: 150px; height: 150px; }
+      .logo { width: 120px; }
+      .bottom-nav { height: 50px; }
+      .bottom-nav button, .bottom-nav a { font-size: 12px; }
+    }
+
+    /* ==== 공지사항 모달 ==== */
     #notice-modal {
       position: fixed;
       top: 0; left: 0;
@@ -147,19 +151,6 @@
       max-height: 80%;
       text-align: left;
     }
-
-    /* 모바일에서도 버튼이 너무 작아지지 않도록 */
-    @media (max-width: 600px) {
-      .menu-container { width: 180px; height: 180px; }
-      .logo { width: 150px; }
-      .menu-button {
-        font-size: 16px !important;
-        padding: 12px 20px !important;
-      }
-      .bottom-nav { height: 50px; }
-      .bottom-nav button, .bottom-nav a { font-size: 12px; }
-    }
-
   </style>
 </head>
 <body>
@@ -175,7 +166,7 @@
   </div>
 
   <nav class="bottom-nav">
-    <button onclick="window.open('https://maps.app.goo.gl/iFsXzUQsKgukNxLbA', '_blank')">
+    <button onclick="window.open('https://maps.app.goo.gl/iFsXzUQsKgukNxLbA?g_st=com.nhncorp.m2app.ShareContentToBand', '_blank')">
       <span class="material-icons">map</span>재난안전지도
     </button>
     <button onclick="window.location.href='index.html'">
@@ -187,13 +178,13 @@
     </button>
   </nav>
 
+  <!-- ==== 공지사항 모달 HTML ==== -->
   <div id="notice-modal">
     <div class="modal-content">
       <h2>공지사항</h2>
       <br>
       <p>
-        [25.10.8. - Ver 1.0]<br>
-        오류 및 건의사항 연락 부탁드리며, 차량 및 자격증 관련 영상은 자료 수집되는대로 업로드 하겠습니다.
+        [25.10.8. - Ver 1.0]<br>오류 및 건의사항 연락 부탁드리며, 차량 및 자격증 관련 영상은 자료 수집되는대로 업로드 하겠습니다.
       </p>
     </div>
   </div>
@@ -205,12 +196,20 @@
       const buttons = document.querySelectorAll('.menu-button');
       const active = container.classList.toggle('active');
 
-      // 최소 반지름 100px로 설정
-      const r = Math.max(logo.offsetWidth / 2 + 80, 100);
+      let r = logo.offsetWidth / 2 + 80;
+      if (window.innerWidth <= 600) r = Math.min(r, 120); // 모바일 최대 반지름
+
       buttons.forEach((btn, index) => {
         const angle = (index / buttons.length) * 2 * Math.PI;
-        const x = r * Math.cos(angle);
-        const y = r * Math.sin(angle);
+        let x = r * Math.cos(angle);
+        let y = r * Math.sin(angle);
+
+        // 화면 밖으로 안나가게 제한
+        const maxX = window.innerWidth/2 - btn.offsetWidth/2 - 10;
+        const maxY = window.innerHeight/2 - btn.offsetHeight/2 - 10;
+        x = Math.max(Math.min(x, maxX), -maxX);
+        y = Math.max(Math.min(y, maxY), -maxY);
+
         btn.style.transform = active 
           ? `translate(-50%, -50%) translate(${x}px, ${y}px)` 
           : 'translate(-50%, -50%)';
@@ -240,31 +239,20 @@
 
     window.onload = () => {
       const savedTheme = localStorage.getItem('theme');
-      const body = document.body;
-      const icon = document.getElementById('theme-icon');
-      const label = document.getElementById('theme-label');
       if (savedTheme === 'dark') {
-        body.classList.add('dark');
-        icon.textContent = 'light_mode';
-        label.textContent = '라이트 모드';
+        document.body.classList.add('dark');
+        document.getElementById('theme-icon').textContent = 'light_mode';
+        document.getElementById('theme-label').textContent = '라이트 모드';
       }
     };
 
     window.addEventListener('resize', () => {
       const container = document.querySelector('.menu-container');
       if (!container.classList.contains('active')) return;
-      const logo = document.querySelector('.logo');
-      const buttons = document.querySelectorAll('.menu-button');
-      const r = Math.max(logo.offsetWidth / 2 + 80, 100);
-      buttons.forEach((btn, index) => {
-        const angle = (index / buttons.length) * 2 * Math.PI;
-        const x = r * Math.cos(angle);
-        const y = r * Math.sin(angle);
-        btn.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
-      });
+      toggleMenu(); // 다시 배치
     });
 
-    // 공지사항 모달
+    // ==== 공지사항 모달 JS ====
     const noticeBtn = document.getElementById('notice-btn');
     const noticeModal = document.getElementById('notice-modal');
 
