@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="logo.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>화재대응능력</title>
+  <style>
+    :root {
+      --bg-color: #f5f5f5;
+      --text-color: #000;
+      --button-bg: linear-gradient(135deg, #ffa28b 0%, #ff7810 100%);
+      --button-color: #fff;
+      --button-hover: rgba(0,0,0,0.1);
+    }
+
+    body.dark {
+      --bg-color: #1e1e1e;
+      --text-color: #f5f5f5;
+      --button-bg: linear-gradient(135deg, #6e6e6e 0%, #303030 100%);
+      --button-color: #fff;
+      --button-hover: rgba(255,255,255,0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding-top: 80px; /* 상단 로고 공간 */
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* 상단 네비 */
+    .logo-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: var(--bg-color);
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #ccc;
+      z-index: 1000;
+    }
+    .logo-nav img { height: 50px; cursor: pointer; }
+
+    /* 페이지 컨텐츠 */
+    .content {
+      padding: 20px;
+      max-width: 800px;
+      width: 100%;
+      flex: 1;
+    }
+
+    h1 { text-align: center; margin-bottom: 20px; }
+
+    /* 검색창 */
+    #qna-search {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    /* 아코디언 */
+    .qna-item {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+    }
+
+    .question {
+      cursor: pointer;
+      font-weight: bold;
+      position: relative;
+      padding-right: 25px;
+      user-select: none;
+    }
+
+    .question::after {
+      content: '+';
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 24px;
+      line-height: 1;
+      transition: transform 0.3s ease;
+    }
+
+    .question.active::after {
+      content: '-';
+      transform: rotate(180deg);
+    }
+
+    .answer {
+      margin-top: 10px;
+      display: none;
+      color: var(--text-color);
+    }
+
+    iframe {
+      width: 100%;
+      height: 315px;
+      border: none;
+    }
+
+    /* 하단 네비 */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background-color: var(--bg-color);
+      border-top: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .bottom-nav button,
+    .bottom-nav a {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-color);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      gap: 2px;
+      transition: color 0.3s ease;
+    }
+
+    .bottom-nav button:hover,
+    .bottom-nav a:hover { color: #888; }
+
+    @media (max-width:600px) {
+      .bottom-nav { height:50px; }
+      .bottom-nav button,.bottom-nav a { font-size:12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 상단 로고 네비 -->
+  <div class="logo-nav">
+    <a href="index.html"><img src="logo.png" alt="로고 이미지" /></a>
+  </div>
+
+  <div class="content">
+    <h1>화재대응능력</h1>
+
+    <!-- 검색창 -->
+    <input type="text" id="qna-search" placeholder="검색어를 입력하세요.">
+
+    <!-- 아코디언 Q&A -->
+    <div class="qna-item">
+      <div class="question">[2급]공기호흡기 장착 및 비상호흡법</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/gsu4HW3TrwI" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="qna-item">
+      <div class="question">[2급]소방호스 전개 및 회수</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/aWQnVtYaVks" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="qna-item">
+      <div class="question">[2급]소방펌프차 조작</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/n7GFGrK-Dd4" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="qna-item">
+      <div class="question">[2급]로프매듭법 기구묶기</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/BseBE2kA0Vo" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="qna-item">
+      <div class="question">[2급]동력절단기 조작</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/p8AYxCaJWlY" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="qna-item">
+      <div class="question">[2급]송풍기 조작</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/hPTFhtZhBLk" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="qna-item">
+      <div class="question">[2급]관창조작 및 주수기법</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/bfJoNUbgcoA" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="qna-item">
+      <div class="question">[2급]사다리 설치 및 등반</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/P1ggL_uN9GY" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="qna-item">
+      <div class="question">[2급]요구조자 검색 및 구조</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/O14IjX0dFeg" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="qna-item">
+      <div class="question">[2급]화재진압 4인조법</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/xS0YR9dvA9Q" allowfullscreen></iframe>
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- 하단 네비 -->
+  <nav class="bottom-nav">
+    <button onclick="window.open('https://maps.app.goo.gl/iFsXzUQsKgukNxLbA?g_st=com.nhncorp.m2app.ShareContentToBand', '_blank')">
+      <span class="material-icons">map</span>재난안전지도
+    </button>
+    <button onclick="window.location.href='index.html'">
+      <span class="material-icons">home</span>홈
+    </button>
+    <button onclick="toggleTheme()">
+      <span class="material-icons" id="theme-icon">dark_mode</span>
+      <span id="theme-label">다크 모드</span>
+    </button>
+  </nav>
+
+  <script>
+    // ===== 아코디언 기능 =====
+    const questions = document.querySelectorAll('.question');
+    questions.forEach(question => {
+      question.addEventListener('click', () => {
+        questions.forEach(q => {
+          if (q !== question) {
+            q.classList.remove('active');
+            const answer = q.nextElementSibling;
+            const iframe = answer.querySelector('iframe');
+            if (iframe) iframe.src = '';
+            answer.style.display = 'none';
+          }
+        });
+
+        question.classList.toggle('active');
+        const answer = question.nextElementSibling;
+        if (answer.style.display === 'block') {
+          const iframe = answer.querySelector('iframe');
+          if (iframe) iframe.src = '';
+          answer.style.display = 'none';
+        } else {
+          const iframe = answer.querySelector('iframe');
+          if (iframe) iframe.src = iframe.getAttribute('data-src');
+          answer.style.display = 'block';
+        }
+      });
+    });
+
+    // ===== 검색 기능 =====
+    const searchInput = document.getElementById('qna-search');
+    const qnaItems = document.querySelectorAll('.qna-item');
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      qnaItems.forEach(item => {
+        const questionText = item.querySelector('.question').textContent.toLowerCase();
+        if (questionText.includes(query)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+          const answer = item.querySelector('.answer');
+          const iframe = answer.querySelector('iframe');
+          if (iframe) iframe.src = '';
+          item.querySelector('.question').classList.remove('active');
+          answer.style.display = 'none';
+        }
+      });
+    });
+
+    // ===== 라이트/다크 모드 =====
+    function toggleTheme() {
+      const body = document.body;
+      const icon = document.getElementById('theme-icon');
+      const label = document.getElementById('theme-label');
+      body.classList.toggle('dark');
+      if (body.classList.contains('dark')) {
+        icon.textContent = 'light_mode';
+        label.textContent = '라이트 모드';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        icon.textContent = 'dark_mode';
+        label.textContent = '다크 모드';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+        document.getElementById('theme-icon').textContent = 'light_mode';
+        document.getElementById('theme-label').textContent = '라이트 모드';
+      }
+    });
+  </script>
+
+</body>
+</html>

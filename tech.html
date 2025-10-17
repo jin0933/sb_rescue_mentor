@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="logo.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>구조기법 검색기</title>
+  <style>
+    :root {
+      --bg-color: #f5f5f5;
+      --text-color: #000;
+    }
+    body.dark {
+      --bg-color: #1e1e1e;
+      --text-color: #f5f5f5;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      margin:0;
+      padding-top:80px; /* 상단 로고 공간 */
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* 상단 로고 */
+    .logo-nav {
+      position: fixed;
+      top:0; left:0; width:100%;
+      background-color: var(--bg-color);
+      display:flex; justify-content:center;
+      padding:10px 0;
+      border-bottom:1px solid #ccc;
+      z-index:1000;
+    }
+    .logo-nav img { height:50px; cursor:pointer; }
+
+    /* 페이지 컨텐츠 */
+    .content {
+      padding:20px;
+      width:90%;
+      max-width:800px;
+    }
+    h1 { text-align:center; margin-bottom:20px; }
+
+    /* 검색창 */
+    #qna-search {
+      width:100%;
+      padding:10px;
+      border-radius:8px;
+      border:1px solid #ccc;
+      font-size:16px;
+      margin-bottom:10px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    #guide-text {
+      text-align:center; 
+      color:gray; 
+      opacity:1; 
+      margin-bottom:20px;
+    }
+
+    /* 아코디언 */
+    .qna-item {
+      border-bottom:1px solid #ccc;
+      padding:10px 0;
+      display:none; /* 초기 숨김 */
+    }
+    .question {
+      cursor:pointer;
+      font-weight:bold;
+      position:relative;
+      padding-right:25px;
+      user-select:none;
+    }
+    .question::after {
+      content:'+';
+      position:absolute;
+      right:0; top:0;
+      font-size:24px;
+      transition: transform 0.3s ease;
+    }
+    .question.active::after {
+      content:'-';
+      transform: rotate(180deg);
+    }
+    .answer {
+      margin-top:10px;
+      display:none;
+      color: var(--text-color);
+    }
+    iframe {
+      width:100%;
+      height:315px;
+      border:none;
+    }
+
+    /* 하단 네비 */
+    .bottom-nav {
+      position: fixed;
+      bottom:0; left:0; width:100%;
+      height:60px;
+      background-color: var(--bg-color);
+      border-top:1px solid #ccc;
+      display:flex;
+      align-items:center;
+      z-index:1000;
+    }
+    .bottom-nav button {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      color: var(--text-color);
+      background:none;
+      border:none;
+      cursor:pointer;
+      font-size:14px;
+      gap:2px;
+    }
+    .bottom-nav button:hover { color:#888; }
+
+    @media(max-width:600px){
+      .bottom-nav{height:50px;}
+      .bottom-nav button{font-size:12px;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 상단 로고 -->
+  <div class="logo-nav">
+    <a href="index.html"><img src="logo.png" alt="로고"></a>
+  </div>
+
+  <div class="content">
+    <h1>구조기법 검색기</h1>
+    <input type="text" id="qna-search" placeholder="검색어를 입력하세요.">
+    <p id="guide-text">
+      * 전체 게시글 숨김 상태입니다. 검색 시 영상이 나타납니다.
+    </p>
+
+    <!-- Q&A 아코디언 -->
+    <div class="qna-item">
+      <div class="question">엘리베이터(승강기) 개방 방법</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/jHFtFNNoN7g" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="qna-item">
+      <div class="question">교통사고 인명구조(터널링 기법)</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/bkWAfiRoqzk" allowfullscreen></iframe>
+      </div>
+    </div>
+    
+    <div class="qna-item">
+      <div class="question">교통사고 인명구조(측면 전복)</div>
+      <div class="answer">
+        <iframe data-src="https://www.youtube.com/embed/3_y-fFYMHLA" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- 하단 네비 -->
+  <nav class="bottom-nav">
+    <button onclick="window.open('https://maps.app.goo.gl/iFsXzUQsKgukNxLbA?g_st=com.nhncorp.m2app.ShareContentToBand', '_blank')">
+      <span class="material-icons">map</span>재난안전지도
+    </button>
+    <button onclick="window.location.href='index.html'">
+      <span class="material-icons">home</span>홈
+    </button>
+    <button onclick="toggleTheme()">
+      <span class="material-icons" id="theme-icon">dark_mode</span>
+      <span id="theme-label">다크 모드</span>
+    </button>
+  </nav>
+
+  <script>
+    // 아코디언 기능
+    const questions = document.querySelectorAll('.question');
+    questions.forEach(q=>{
+      q.addEventListener('click',()=>{
+        questions.forEach(item=>{
+          if(item!==q){
+            item.classList.remove('active');
+            const ans=item.nextElementSibling;
+            ans.style.display='none';
+            const iframe=ans.querySelector('iframe');
+            if(iframe) iframe.src='';
+          }
+        });
+        q.classList.toggle('active');
+        const answer=q.nextElementSibling;
+        if(answer.style.display==='block'){
+          answer.style.display='none';
+          const iframe=answer.querySelector('iframe');
+          if(iframe) iframe.src='';
+        } else {
+          answer.style.display='block';
+          const iframe=answer.querySelector('iframe');
+          if(iframe) iframe.src=iframe.getAttribute('data-src');
+          // 영상이 열리면 안내문 숨기기
+          document.getElementById('guide-text').style.display='none';
+        }
+      });
+    });
+
+    // 검색 기능
+    const searchInput = document.getElementById('qna-search');
+    const qnaItems = document.querySelectorAll('.qna-item');
+    const guideText = document.getElementById('guide-text');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      let hasResult = false;
+
+      qnaItems.forEach(item => {
+        const questionText = item.querySelector('.question').textContent.toLowerCase();
+        if (questionText.includes(query) && query !== '') {
+          item.style.display = 'block';
+          hasResult = true;
+        } else {
+          item.style.display = 'none';
+          const answer = item.querySelector('.answer');
+          const iframe = answer.querySelector('iframe');
+          if (iframe) iframe.src = '';
+          item.querySelector('.question').classList.remove('active');
+          answer.style.display = 'none';
+        }
+      });
+
+      // 안내문 상태 전환
+      if (query === '') {
+        guideText.textContent = '* 전체 게시글 숨김 상태입니다. 검색 시 영상이 나타납니다.';
+        guideText.style.display = 'block';
+      } else if (!hasResult) {
+        guideText.textContent = '* 일치하는 영상이 없습니다.';
+        guideText.style.display = 'block';
+      } else {
+        guideText.style.display = 'none';
+      }
+    });
+
+    // 라이트/다크 모드
+    function toggleTheme(){
+      const body=document.body;
+      const icon=document.getElementById('theme-icon');
+      const label=document.getElementById('theme-label');
+      body.classList.toggle('dark');
+      if(body.classList.contains('dark')){
+        icon.textContent='light_mode';
+        label.textContent='라이트 모드';
+        localStorage.setItem('theme','dark');
+      } else {
+        icon.textContent='dark_mode';
+        label.textContent='다크 모드';
+        localStorage.setItem('theme','light');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded',()=>{
+      const savedTheme=localStorage.getItem('theme');
+      if(savedTheme==='dark'){
+        document.body.classList.add('dark');
+        document.getElementById('theme-icon').textContent='light_mode';
+        document.getElementById('theme-label').textContent='라이트 모드';
+      }
+    });
+  </script>
+
+</body>
+</html>
