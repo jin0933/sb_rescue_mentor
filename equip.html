@@ -72,7 +72,7 @@
       color: var(--text-color);
     }
     
-    /* === 추가된 CSS: 키워드 스타일 === */
+    /* [키워드 기능 CSS 추가] */
     #keyword-suggestions {
       display: flex; 
       flex-wrap: wrap; 
@@ -103,7 +103,7 @@
     body.dark .keyword-button:hover {
       background-color: #555;
     }
-    /* === 끝 === */
+    /* ---------------------- */
 
     #guide-text {
       text-align:center; 
@@ -203,10 +203,9 @@
 
     <input type="text" id="qna-search" placeholder="검색어를 입력하세요.">
     
-    <div id="keyword-suggestions">
-      </div>
-
-    <p id="guide-text">
+        <div id="keyword-suggestions">
+          </div>
+        <p id="guide-text">
       * 전체 게시글 숨김 상태입니다. 검색 시 영상이 나타납니다.
     </p>
 
@@ -295,29 +294,30 @@
   </nav>
 
   <script>
-    // === 추가된 JavaScript: 데이터 정의 ===
-    const SUGGESTED_KEYWORDS = [
-      "체인톱",
-      "SCUBA",
-      "롱호스",
-      "리프트잭",
-      "RIT",
-      "오토롤",
-      "백플레이트",
-      "반지절단기",
-      "차량문개방기",
-      "산악용들것"
-    ];
+    // [키워드 기능 JavaScript 추가]
+    const SUGGESTED_KEYWORDS = [
+      "체인톱",
+      "SCUBA",
+      "롱호스",
+      "리프트잭",
+      "RIT",
+      "오토롤",
+      "백플레이트",
+      "반지절단기",
+      "차량문개방기",
+      "산악용들것"
+    ];
+    // ----------------------------
 
     // ===== DOM 요소 정의 =====
     const questions = document.querySelectorAll('.question');
     const searchInput = document.getElementById('qna-search');
     const qnaItems = document.querySelectorAll('.qna-item');
     const guideText = document.getElementById('guide-text');
-    const keywordContainer = document.getElementById('keyword-suggestions'); // 추가
+    const keywordContainer = document.getElementById('keyword-suggestions'); // 추가
 
-    
-    // === 추가된 JavaScript: 헬퍼 함수 - 검색 로직 실행 ===
+
+    // [추가된 헬퍼 함수] 검색 로직 실행 및 키워드 표시/숨김 관리
     function triggerSearch() {
       const query = searchInput.value.toLowerCase();
       let hasResult = false;
@@ -325,13 +325,11 @@
       qnaItems.forEach(item => {
         const questionText = item.querySelector('.question').textContent.toLowerCase();
         
-        // 검색 결과 표시/숨김 로직
         if (questionText.includes(query) && query !== '') {
           item.style.display = 'block';
           hasResult = true;
         } else {
           item.style.display = 'none';
-          // 비활성화 및 영상 언로드
           const answer = item.querySelector('.answer');
           const iframe = answer.querySelector('iframe');
           if (iframe) iframe.src = '';
@@ -340,7 +338,6 @@
         }
       });
 
-      // 안내문 상태 전환 및 키워드 표시 로직
       if (query === '') {
         guideText.textContent = '* 전체 게시글 숨김 상태입니다. 검색 시 영상이 나타납니다.';
         guideText.style.display = 'block';
@@ -356,7 +353,7 @@
     }
 
 
-    // === 추가된 JavaScript: 키워드 버튼 생성 및 이벤트 리스너 함수 ===
+    // [추가된 헬퍼 함수] 키워드 버튼 생성
     function renderKeywordButtons() {
       keywordContainer.innerHTML = ''; 
       
@@ -374,9 +371,10 @@
         });
       }
     }
+    // ----------------------------
 
 
-    // ===== 아코디언 기능 (수정된 부분: 키워드 숨김 추가) =====
+    // ===== 아코디언 기능 (수정된 부분: 키워드 숨김 로직 추가) =====
     questions.forEach(question => {
       question.addEventListener('click', () => {
         questions.forEach(q => {
@@ -405,11 +403,11 @@
       });
     });
 
-    // ===== 검색 기능 (수정된 부분: triggerSearch 호출) =====
+    // ===== 검색 기능 (수정된 부분: triggerSearch 호출로 변경) =====
     searchInput.addEventListener('input', triggerSearch);
 
 
-    // ===== 라이트/다크 모드 (기존 로직) =====
+    // ===== 라이트/다크 모드 및 초기 로딩 (수정된 부분: 키워드 초기 로딩 추가) =====
     function toggleTheme() {
       const body = document.body;
       const icon = document.getElementById('theme-icon');
@@ -427,9 +425,9 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      // 페이지 로드 시 키워드 버튼을 초기 렌더링 (추가됨)
-      renderKeywordButtons(); 
-      
+      // 페이지 로드 시 키워드 버튼을 초기 렌더링
+      renderKeywordButtons(); 
+      
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark') {
         document.body.classList.add('dark');
